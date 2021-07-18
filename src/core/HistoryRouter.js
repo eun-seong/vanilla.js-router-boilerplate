@@ -17,22 +17,17 @@ class HistoryRouter {
   }
 
   initEvent() {
-    window.onpopstate = (e) => {
-      const path = window.location.pathname;
-      let component = this.routes[path];
-      if (!this.hasRoute(path)) {
-        console.error('Not found ', path);
-        component = this.routes[0];
-      }
-      this.renderHTML(component);
-    };
+    window.onpopstate = () => this.onHistoryChangeHandler();
   }
 
   onHistoryChangeHandler() {
     const path = window.location.pathname;
-    const component = this.routes[path].component;
-    this.$app.innerHTML = '';
-    new component(this.$app);
+    let component = this.routes[path];
+    if (!this.hasRoute(path)) {
+      console.error('Not found ', path);
+      component = this.routes[0];
+    }
+    this.renderHTML(component);
   }
 
   getRoute(path) {
